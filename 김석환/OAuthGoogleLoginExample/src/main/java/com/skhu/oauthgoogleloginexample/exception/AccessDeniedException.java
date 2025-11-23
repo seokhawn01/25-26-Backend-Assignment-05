@@ -1,0 +1,7 @@
+package com.skhu.oauthgoogleloginexample.exception;
+
+public class AccessDeniedException extends RuntimeException {
+    public AccessDeniedException(String message) {
+        super(message);
+    }
+}

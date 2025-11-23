@@ -34,15 +34,18 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(
-                                "/api/**",              // 콜백/토큰 교환 컨트롤러 열어둠
-                                "/", "/index.html",     // 공개 랜딩
+                                "/api/oauth2/login",        // OAuth 로그인 요청
+                                "/api/oauth2/callback/**", // OAuth 콜백
+                                "/api/oauth2/refresh",     // Refresh Token 재발급 API
+                                "/", "/index.html",
                                 "/login/**", "/oauth2/**",
                                 "/error", "/favicon.ico",
                                 "/static/**", "/assets/**"
                         ).permitAll()
-                        .requestMatchers("/gdg/**").authenticated()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/gdg/**").authenticated() // 여기는 너가 인증 필요로 설정한 범위
+                        .anyRequest().authenticated()               // 나머지 모든 요청은 인증 필요
                 )
+
                 .cors(cors -> cors.configurationSource(configurationSource()))
                 .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();

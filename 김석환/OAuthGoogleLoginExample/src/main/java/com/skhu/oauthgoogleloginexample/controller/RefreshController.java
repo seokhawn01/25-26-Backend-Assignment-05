@@ -2,15 +2,13 @@ package com.skhu.oauthgoogleloginexample.controller;
 
 import com.skhu.oauthgoogleloginexample.domain.RefreshToken;
 import com.skhu.oauthgoogleloginexample.domain.User;
+import com.skhu.oauthgoogleloginexample.dto.RefreshRequest;
 import com.skhu.oauthgoogleloginexample.dto.TokenDto;
 import com.skhu.oauthgoogleloginexample.jwt.TokenProvider;
 import com.skhu.oauthgoogleloginexample.repository.RefreshTokenRepository;
 import com.skhu.oauthgoogleloginexample.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +20,9 @@ public class RefreshController {
     private final TokenProvider tokenProvider;
 
     @PostMapping("/refresh")
-    public TokenDto refresh(@RequestParam String refreshToken) {
+    public TokenDto refresh(@RequestBody RefreshRequest request) {
+
+        String refreshToken = request.getRefreshToken();
 
         RefreshToken stored = refreshTokenRepository.findById(
                 Long.parseLong(

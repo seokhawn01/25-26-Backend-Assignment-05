@@ -18,6 +18,7 @@ public class UserController {
 
     @GetMapping("/test")
     public User getUser(Principal principal) {
-        return googleLoginService.test(principal);
+        return googleLoginService.getUserByPrincipal(principal);
     }
+
 }
